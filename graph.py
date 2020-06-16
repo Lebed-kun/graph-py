@@ -206,134 +206,33 @@ class Graph:
         return union
 
     def intersection(self, graph):
-        verticies = grapg.getVerticies()
+        verticies = graph.getVerticies()
 
         intersection = (type(self))(
             set(self._adjVerticies).intersection(
                 set(verticies)
             )
         )
+
+        # Iterate over self verticies
+        for vertex in self._adjVerticies:
+            if vertex in verticies:
+                intersection.setAdjacents(
+                    vertex,
+                    self.getAdjacents(vertex).intersection(
+                        graph.getAdjacents(vertex)
+                    )
+                )
         
-# Success 
-def test_distance():
-    graph = Graph([
-        1, 2, 3, 4,
-        5, 6, 7
-    ])
+        # Iterate over graph's vertices
+        for vertex in verticies:
+            if vertex in self._adjVerticies:
+                intersection.setAdjacents(
+                    vertex,
+                    graph.getAdjacents(vertex).intersection(
+                        self.getAdjacents(vertex)
+                    )
+                )
 
-    graph.addAdjacent(1, 2)\
-        .addAdjacent(2, 3)\
-        .addAdjacent(3, 7)\
-        .addAdjacent(1, 5)\
-        .addAdjacent(2, 6)\
-        .addAdjacent(3, 6)\
-        .addAdjacent(4, 5)\
-        .addAdjacent(5, 6)
-
-    distance = graph.distance(4, 3)
-    print("Distance: " + str(distance))
-
-# Success
-def test_distance_matrix():
-    graph = Graph([
-        1, 2, 3, 4,
-        5, 6, 7
-    ])
-
-    graph.addAdjacent(1, 2)\
-        .addAdjacent(2, 3)\
-        .addAdjacent(3, 7)\
-        .addAdjacent(1, 5)\
-        .addAdjacent(2, 6)\
-        .addAdjacent(3, 6)\
-        .addAdjacent(4, 5)\
-        .addAdjacent(5, 6)
-
-    distanceMatrix = graph.distanceMatrix()
-    print(distanceMatrix)
-
-# Success
-def test_eccentricities():
-    graph = Graph([
-        1, 2, 3, 4,
-        5, 6, 7
-    ])
-
-    graph.addAdjacent(1, 2)\
-        .addAdjacent(2, 3)\
-        .addAdjacent(3, 7)\
-        .addAdjacent(1, 5)\
-        .addAdjacent(2, 6)\
-        .addAdjacent(3, 6)\
-        .addAdjacent(4, 5)\
-        .addAdjacent(5, 6)
-
-    eccentricities = graph.eccentricities()
-    print(eccentricities)
-
-    distanceMatrix = graph.distanceMatrix()
-    print(distanceMatrix)
-
-# Success
-def test_radius_diameter():
-    graph = Graph([
-        1, 2, 3, 4,
-        5, 6, 7
-    ])
-
-    graph.addAdjacent(1, 2)\
-        .addAdjacent(2, 3)\
-        .addAdjacent(3, 7)\
-        .addAdjacent(1, 5)\
-        .addAdjacent(2, 6)\
-        .addAdjacent(3, 6)\
-        .addAdjacent(4, 5)\
-        .addAdjacent(5, 6)
-
-    eccentricities = graph.eccentricities()
-    print(eccentricities)
-
-    radius = graph.radius()
-    print("Radius: {}".format(radius))
-
-    diameter = graph.diameter()
-    print("Diameter: {}".format(diameter))
-
-# Success
-def test_inverse():
-    graph = Graph([1, 2, 3, 4])
-
-    graph.addAdjacent(1, 2)\
-        .addAdjacent(1, 3)\
-        .addAdjacent(2, 4)
-
-    inverse = graph.inverse()
-
-    print("Original graph: ", graph.getVerticies())
-    print("Inverse graph: ", inverse.getVerticies())
-
-# Union of original and its inverse must be complete graph
-# Success
-def test_union():
-    graph1 = Graph([1, 2, 3, 4])
-    graph1.addAdjacent(1, 2)\
-        .addAdjacent(1, 3)\
-        .addAdjacent(2, 4)
-
-    inverse1 = graph1.inverse()
-
-    union1 = graph1.union(inverse1)
-
-    graph2 = Graph(['a', 'b', 'c', 'd'])
-    graph2.addAdjacent('a', 'b')\
-        .addAdjacent('a', 'd')\
-        .addAdjacent('c', 'd')
-
-    union2 = graph1.union(graph2)
-
-    print("Original graph: ", graph1.getVerticies())
-    print("Inverse graph: ", inverse1.getVerticies())
-    print("Union graph: ", union1.getVerticies())
-    print("Second graph: ", graph2.getVerticies())
-    print("Union of disjoint graphs: ", union2.getVerticies())
+        return intersection
 
