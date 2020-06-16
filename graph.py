@@ -75,7 +75,7 @@ class Graph:
             if len(stack) == 0:
                 return result
 
-    def distanceMatrix(self):
+    def distanceMatrix(self, *args):
         if self._memoized['distanceMatrix'] is not None:
             return self._memoized['distanceMatrix']
 
@@ -90,7 +90,7 @@ class Graph:
 
         return self._memoized['distanceMatrix']
 
-    def eccentricities(self):
+    def eccentricities(self, *args):
         if self._memoized['eccentricities'] is not None:
             return self._memoized['eccentricities']
 
@@ -108,7 +108,7 @@ class Graph:
 
         return self._memoized['eccentricities']
 
-    def radius(self):
+    def radius(self, *args):
         result = None
         
         eccentricities = self.eccentricities()
@@ -121,7 +121,7 @@ class Graph:
 
         return result
 
-    def diameter(self):
+    def diameter(self, *args):
         result = None
         
         eccentricities = self.eccentricities()
@@ -135,7 +135,7 @@ class Graph:
         return result
 
     # @return {Graph}
-    def inverse(self):
+    def inverse(self, *args):
         inverse = (type(self))(
             self.getVerticies()
         )
@@ -150,7 +150,10 @@ class Graph:
         return inverse
 
     # @return {Graph}
-    def union(self, graph):
+    def union(self, graph, *args):
+        if graph is None:
+            raise ValueError("Second graph is not provided!")
+
         verticies = graph.getVerticies()
         
         union = (type(self))(
@@ -192,7 +195,10 @@ class Graph:
         return union
 
     # @return {Graph}
-    def intersection(self, graph):
+    def intersection(self, graph, *args):
+        if graph is None:
+            raise ValueError("Second graph is not provided!")
+
         verticies = graph.getVerticies()
 
         intersection = (type(self))(
@@ -224,7 +230,10 @@ class Graph:
         return intersection
 
     # @return {Graph}
-    def join(self, graph):
+    def join(self, graph, *args):
+        if graph is None:
+            raise ValueError("Second graph is not provided!")
+
         verticies = graph.getVerticies()
         join = self.union(graph)
 
@@ -236,7 +245,10 @@ class Graph:
         return join 
 
     # @return {Graph}
-    def product(self, graph):
+    def product(self, graph, *args):
+        if graph is None:
+            raise ValueError("Second graph is not provided!")
+
         verticies1 = self.getVerticies()
         verticies2 = graph.getVerticies()
 
@@ -246,8 +258,8 @@ class Graph:
             for adjacent1 in self._adjVerticies[vertex1]:
                 for vertex2 in verticies2:
                     product.addAdjacent(
-                        (vertex1, vertex2),
-                        (adjacent1, vertex2)
+                        "{},{}".format(vertex1, vertex2),
+                        "{},{}".format(adjacent1, vertex2)
                     )
 
             
@@ -257,14 +269,17 @@ class Graph:
             for adjacent2 in adjacents2:
                 for vertex1 in verticies1:
                     product.addAdjacent(
-                        (vertex1, vertex2),
-                        (vertex1, adjacent2)
+                        "{},{}".format(vertex1, vertex2),
+                        "{},{}".format(vertex1, adjacent2)
                     )
 
         return product
 
     # @return {Graph}
-    def composition(self, graph):
+    def composition(self, graph, *args):
+        if graph is None:
+            raise ValueError("Second graph is not provided!")
+
         vertices1 = self.getVerticies()
         vertices2 = graph.getVerticies()
 
@@ -275,8 +290,8 @@ class Graph:
                 for vertex2_1 in vertices2:
                     for vertex2_2 in vertices2:
                         composition.addAdjacent(
-                            (vertex1, vertex2_1),
-                            (adjacent1, vertex2_2)
+                            "{},{}".format(vertex1, vertex2_1),
+                            "{},{}".format(adjacent1, vertex2_2)
                         )
         
         for vertex1 in vertices1:
@@ -285,8 +300,8 @@ class Graph:
 
                 for adjacent2 in adjacents2:
                     composition.addAdjacent(
-                        (vertex1, vertex2),
-                        (vertex1, adjacent2)
+                        "{},{}".format(vertex1, vertex2),
+                        "{},{}".format(vertex1, adjacent2)
                     )
 
         return composition
