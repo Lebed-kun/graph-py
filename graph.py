@@ -34,10 +34,10 @@ class Graph:
             return number1 if number1 > number2 else number2
 
     def getVerticies(self):
-        return self._adjVerticies
+        return dict(self._adjVerticies)
 
     def getAdjacents(self, vertex):
-        return self._adjVerticies[vertex]
+        return set(self._adjVerticies[vertex])
 
     def setAdjacents(self, vertex, adjacents):
         if vertex in self._adjVerticies:\
@@ -151,7 +151,7 @@ class Graph:
     # @return {Graph}
     def inverse(self):
         inverse = (type(self))(
-            self._adjVerticies
+            self.getVerticies()
         )
         
         for source in self._adjVerticies:
@@ -168,7 +168,7 @@ class Graph:
         verticies = graph.getVerticies()
         
         union = (type(self))(
-            set(self._adjVerticies).union(
+            set(self.getVerticies()).union(
                 set(verticies)
             )
         )
@@ -205,11 +205,12 @@ class Graph:
 
         return union
 
+    # @return {Graph}
     def intersection(self, graph):
         verticies = graph.getVerticies()
 
         intersection = (type(self))(
-            set(self._adjVerticies).intersection(
+            set(self.getVerticies()).intersection(
                 set(verticies)
             )
         )
@@ -235,4 +236,16 @@ class Graph:
                 )
 
         return intersection
+
+    # @return {Graph}
+    def join(self, graph):
+        verticies = graph.getVerticies()
+        join = self.union(graph)
+
+        for source in self._adjVerticies:
+            for destination in verticies:
+                if source != destination:
+                    join.addAdjacent(source, destination)
+
+        return join 
 
