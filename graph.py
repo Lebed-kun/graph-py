@@ -1,3 +1,5 @@
+from utils import Math
+
 class Graph:
     _adjVerticies = None # { [vertex: number] : number[] }
     _memoized = {
@@ -16,22 +18,6 @@ class Graph:
     def _makeDirty(self):
         for key in self._memoized:
             self._memoized[key] = None
-
-    def _safeMin(self, number1, number2):
-        if number1 is None:
-            return number2
-        elif number2 is None:
-            return number1
-        else:
-            return number1 if number1 < number2 else number2
-
-    def _safeMax(self, number1, number2):
-        if number1 is None:
-            return number2
-        elif number2 is None:
-            return number1
-        else:
-            return number1 if number1 > number2 else number2
 
     def getVerticies(self):
         return dict(self._adjVerticies)
@@ -73,7 +59,7 @@ class Graph:
                 currVertex, currLength = stack.pop()
 
             if currVertex == destination:
-                result = self._safeMin(currLength, result)
+                result = Math.safeMin(currLength, result)
 
             # Mark as visited
             visited.add(currVertex)
@@ -114,7 +100,7 @@ class Graph:
         for source in distanceMatrix:
             eccentricity = None
             for destination in distanceMatrix[source]:
-                eccentricity = self._safeMax(
+                eccentricity = Math.safeMax(
                     distanceMatrix[source][destination],
                     eccentricity
                 )
@@ -128,7 +114,7 @@ class Graph:
         eccentricities = self.eccentricities()
 
         for vertex in eccentricities:
-            result = self._safeMin(
+            result = Math.safeMin(
                 eccentricities[vertex],
                 result
             )
@@ -141,7 +127,7 @@ class Graph:
         eccentricities = self.eccentricities()
 
         for vertex in eccentricities:
-            result = self._safeMax(
+            result = Math.safeMax(
                 eccentricities[vertex],
                 result
             )
