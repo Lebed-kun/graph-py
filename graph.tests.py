@@ -195,4 +195,19 @@ def test_product():
     print("Second graph: ", graph2.getVerticies())
     print("Product: ", product.getVerticies())
 
-test_product()
+# Success
+def test_composition():
+    graph1 = Graph(['x', 'y'])
+    graph1.addAdjacent('x', 'y')
+
+    graph2 = Graph(['a', 'b', 'c'])
+    graph2.addAdjacent('a', 'b')\
+        .addAdjacent('b', 'c')
+
+    composition = graph1.composition(graph2)
+
+    print("First graph: ", graph1.getVerticies())
+    print("Second graph: ", graph2.getVerticies())
+    print("Composition: ", composition.getVerticies())
+
+test_composition()

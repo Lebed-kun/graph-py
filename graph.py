@@ -262,3 +262,31 @@ class Graph:
                     )
 
         return product
+
+    # @return {Graph}
+    def composition(self, graph):
+        vertices1 = self.getVerticies()
+        vertices2 = graph.getVerticies()
+
+        composition = (type(self))([])
+
+        for vertex1 in vertices1:
+            for adjacent1 in self._adjVerticies[vertex1]:
+                for vertex2_1 in vertices2:
+                    for vertex2_2 in vertices2:
+                        composition.addAdjacent(
+                            (vertex1, vertex2_1),
+                            (adjacent1, vertex2_2)
+                        )
+        
+        for vertex1 in vertices1:
+            for vertex2 in vertices2:
+                adjacents2 = graph.getAdjacents(vertex2)
+
+                for adjacent2 in adjacents2:
+                    composition.addAdjacent(
+                        (vertex1, vertex2),
+                        (vertex1, adjacent2)
+                    )
+
+        return composition
