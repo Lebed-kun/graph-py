@@ -164,6 +164,7 @@ def test_intersection():
     print("Second graph: ", graph3.getVerticies())
     print("Intersection: ", intersection3.getVerticies())
 
+# Success
 def test_join():
     graph1 = Graph([1, 2])
     graph1.addAdjacent(1, 2)
@@ -178,4 +179,20 @@ def test_join():
     print("Second graph: ", graph2.getVerticies())
     print("Join: ", join.getVerticies())
 
-test_join()
+# Success
+def test_product():
+    graph1 = Graph(['x', 'y'])
+    graph1.addAdjacent('x', 'y')
+
+    graph2 = Graph(['a', 'b', 'c', 'd'])
+    graph2.addAdjacent('a', 'b')\
+        .addAdjacent('b', 'c')\
+        .addAdjacent('c', 'd')
+
+    product = graph1.product(graph2)
+
+    print("First graph: ", graph1.getVerticies())
+    print("Second graph: ", graph2.getVerticies())
+    print("Product: ", product.getVerticies())
+
+test_product()

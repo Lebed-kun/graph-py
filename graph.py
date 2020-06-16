@@ -1,4 +1,4 @@
-from utils import Math
+from utils import Math, Set
 
 class Graph:
     _adjVerticies = None # { [vertex: number] : number[] }
@@ -235,3 +235,30 @@ class Graph:
 
         return join 
 
+    # @return {Graph}
+    def product(self, graph):
+        verticies1 = self.getVerticies()
+        verticies2 = graph.getVerticies()
+
+        product = (type(self))([])
+
+        for vertex1 in verticies1:
+            for adjacent1 in self._adjVerticies[vertex1]:
+                for vertex2 in verticies2:
+                    product.addAdjacent(
+                        (vertex1, vertex2),
+                        (adjacent1, vertex2)
+                    )
+
+            
+        for vertex2 in verticies2:
+            adjacents2 = graph.getAdjacents(vertex2)
+
+            for adjacent2 in adjacents2:
+                for vertex1 in verticies1:
+                    product.addAdjacent(
+                        (vertex1, vertex2),
+                        (vertex1, adjacent2)
+                    )
+
+        return product
