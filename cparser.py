@@ -36,13 +36,21 @@ class Parser:
 
         return result
 
+    def _listifyAdjacents(self, graph):
+        verticies = graph.getVerticies()
+
+        for vertex in verticies:
+            verticies[vertex] = list(verticies[vertex])
+
+        return verticies
+
     def parse(self):
         result = {}
         newData = self._performAction()
 
         if isinstance(newData, Graph):
             result["type"] = "graph"
-            result["data"] = newData.getVerticies()
+            result["data"] = self._listifyAdjacents(newData)
         elif isinstance(newData, dict) and\
             self._data["action"] == "distanceMatrix":
             result["type"] = "matrix"
